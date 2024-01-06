@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+
+# Create Datasets
+sudo /usr/sbin/zfs create  pool/container-volumes/teslamate
+
+
+# Create Shares
+midclt call sharing.nfs.create '{"comment": "tesla mate app data", "path": "/mnt/pool/container-volumes/teslamate", "maproot_user": "root", "enabled": true}'
+
+# Create volume subdirectories
+sudo mkdir -p /mnt/pool/container-volumes/teslamate/db
+sudo mkdir -p /mnt/pool/container-volumes/teslamate/grafana-data
+sudo mkdir -p /mnt/pool/container-volumes/teslamate/mosquitto-conf
+sudo mkdir -p /mnt/pool/container-volumes/teslamate/mosquitto-data

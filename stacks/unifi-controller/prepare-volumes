@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Create Datasets
+sudo /usr/sbin/zfs create  pool/container-volumes/unifi
+
+# Create Shares
+midclt call sharing.nfs.create '{"comment": "unifi controller data", "path": "/mnt/pool/container-volumes/unifi", "maproot_user": "root", "enabled": true}'

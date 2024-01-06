@@ -1,0 +1,86 @@
+version: "3.8"
+
+services:
+  immich-server:
+    container_name: immich_server
+    image: ghcr.io/immich-app/immich-server:v1.91.4
+    command: ["start.sh", "immich"]
+    volumes:
+      - upload-location:/usr/src/app/upload
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      DB_HOSTNAME: ${DB_HOSTNAME:?err} 
+      DB_USERNAME: ${DB_USERNAME:?err} 
+      DB_PASSWORD: ${DB_PASSWORD:?err}
+      DB_DATABASE_NAME: ${DB_DATABASE_NAME:?err}
+    ports:
+      - 2283:3001
+    depends_on:
+      - redis
+      - database
+    restart: always
+
+  immich-microservices:
+    container_name: immich_microservices
+    image: ghcr.io/immich-app/immich-server:v1.91.4
+    # extends:
+    #   file: hwaccel.yml
+    #   service: hwaccel
+    command: ["start.sh", "microservices"]
+    volumes:
+      - upload-location:/usr/src/app/upload
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      DB_HOSTNAME: ${DB_HOSTNAME:?err} 
+      DB_USERNAME: ${DB_USERNAME:?err} 
+      DB_PASSWORD: ${DB_PASSWORD:?err}
+      DB_DATABASE_NAME: ${DB_DATABASE_NAME:?err}
+    depends_on:
+      - redis
+      - database
+    restart: always
+
+  immich-machine-learning:
+    container_name: immich_machine_learning
+    image: ghcr.io/immich-app/immich-machine-learning:v1.91.4
+    volumes:
+      - model-cache:/cache
+    environment:
+      REDIS_HOSTNAME: ${REDIS_HOSTNAME:?err}
+    restart: always
+
+  redis:
+    container_name: immich_redis
+    image: redis:6.2-alpine@sha256:70a7a5b641117670beae0d80658430853896b5ef269ccf00d1827427e3263fa3
+    restart: always
+
+  database:
+    container_name: immich_postgres
+    image: tensorchord/pgvecto-rs:pg14-v0.1.11
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?err}
+      POSTGRES_USER: ${DB_USERNAME:?err}
+      POSTGRES_DB: ${DB_DATABASE_NAME:?err}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  pgdata:
+   driver: local
+   driver_opts:
+     type: nfs
+     o: "addr=${NFS_HOST:?err},rw,noatime"
+     device: ":${CONTAINER_VOLUME:?err}/pgdata"
+  model-cache:
+    driver: local
+    driver_opts:
+     type: nfs
+     o: "addr=${NFS_HOST:?err},rw,noatime"
+     device: ":${CONTAINER_VOLUME:?err}/model-cache"
+  upload-location:
+    driver: local
+    driver_opts:
+     type: nfs
+     o: "addr=${NFS_HOST:?err},rw,noatime"
+     device: ":${PHOTOS_VOLUME:?err}"

@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  plex:
+    container_name: plex
+    image: plexinc/pms-docker:1.32.8.7639-fb6452ebf
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ:?err}
+      - PLEX_CLAIM=${PLEX_CLAIM:?err}
+    volumes:
+      - config:/config
+      - transcode:/transcode
+      - media:/data
+volumes:
+  config:
+   driver: local
+   driver_opts:
+     type: nfs
+     o: "addr=${NFS_HOST:?err},rw,noatime"
+     device: ":${CONTAINER_VOLUME:?err}/config"
+  transcode:
+   driver: local
+   driver_opts:
+     type: nfs
+     o: "addr=${NFS_HOST:?err},rw,noatime"
+     device: ":${CONTAINER_VOLUME:?err}/transcode"
+  media:
+   driver: local
+   driver_opts:
+     type: nfs
+     o: "addr=${NFS_HOST:?err},rw,noatime"
+     device: ":${MULTIMEDIA_VOLUME:?err}"

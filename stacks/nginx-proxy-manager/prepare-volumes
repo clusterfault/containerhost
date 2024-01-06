@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Create Datasets
+sudo /usr/sbin/zfs create  pool/container-volumes/nginx-proxy-manager
+
+# Create Shares
+midclt call sharing.nfs.create '{"comment": "nginx proxy manager data", "path": "/mnt/pool/container-volumes/nginx-proxy-manager", "maproot_user": "root", "enabled": true}'
+
+# Create volume subdirectories
+sudo mkdir -p /mnt/pool/container-volumes/nginx-proxy-manager/data
+sudo mkdir -p /mnt/pool/container-volumes/nginx-proxy-manager/letsencrypt

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Create Datasets
+sudo /usr/sbin/zfs create  pool/container-volumes/netdata
+
+# Create Shares
+midclt call sharing.nfs.create '{"comment": "netdata data", "path": "/mnt/pool/container-volumes/netdata", "maproot_user": "root", "enabled": true}'
+
+# Create volume subdirectories
+sudo mkdir -p /mnt/pool/container-volumes/netdata/config
+sudo mkdir -p /mnt/pool/container-volumes/netdata/lib
+sudo mkdir -p /mnt/pool/container-volumes/netdata/cache

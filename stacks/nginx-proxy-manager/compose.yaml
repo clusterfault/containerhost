@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:2.10.4'
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - nginx-proxy-manager-data:/data
+      - nginx-proxy-manager-letsencrypt:/etc/letsencrypt
+volumes:
+  nginx-proxy-manager-data:
+   driver: local
+   driver_opts:
+     type: nfs
+     o: "addr=${NFS_HOST},rw,noatime"
+     device: ":${CONTAINER_VOLUME}/data"
+  nginx-proxy-manager-letsencrypt:
+   driver: local
+   driver_opts:
+     type: nfs
+     o: "addr=${NFS_HOST},rw,noatime"
+     device: ":${CONTAINER_VOLUME}/letsencrypt"

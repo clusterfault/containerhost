@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Create Datasets
+sudo /usr/sbin/zfs create  pool/container-volumes/plex
+
+# Create Shares
+midclt call sharing.nfs.create '{"comment": "plex app data", "path": "/mnt/pool/container-volumes/plex", "maproot_user": "root", "enabled": true}'
+
+# Create volume subdirectories
+sudo mkdir /mnt/pool/container-volumes/plex/config
+sudo mkdir /mnt/pool/container-volumes/plex/transcode

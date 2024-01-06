@@ -1,0 +1,12 @@
+---
+version: "3.8"
+
+services:
+  tunnel:
+    container_name: cloudflare-tunnel
+    image: cloudflare/cloudflared:2023.10.0
+    restart: unless-stopped
+    command: tunnel run 
+    environment:
+        - TUNNEL_TOKEN=$TUNNEL_TOKEN
+        - NO_AUTOUPDATE=true

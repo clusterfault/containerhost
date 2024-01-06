@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Create Datasets
+sudo /usr/sbin/zfs create  pool/container-volumes/immich
+sudo /usr/sbin/zfs create  pool/photos/uploaded
+
+# Create Shares
+midclt call sharing.nfs.create '{"comment": "immich app data", "path": "/mnt/pool/container-volumes/immich", "maproot_user": "root", "enabled": true}'
+midclt call sharing.nfs.create '{"comment": "immich photo library", "path": "/mnt/pool/photos/uploaded", "maproot_user": "root", "enabled": true}'
+
+# Create volume subdirectories
+sudo mkdir /mnt/pool/container-volumes/immich/pgdata
+sudo mkdir /mnt/pool/container-volumes/immich/tsdata
+sudo mkdir /mnt/pool/container-volumes/immich/model-cache
+
+# Set dir permissions
+sudo chown -R apps:apps /mnt/pool/container-volumes/immich
+sudo chown -R apps:apps /mnt/pool/photos/uploaded

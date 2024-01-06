@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Create Datasets
+sudo /usr/sbin/zfs create  pool/container-volumes/semaphore
+# Create Shares
+midclt call sharing.nfs.create '{"comment": "semaphore data", "path": "/mnt/pool/container-volumes/semaphore", "maproot_user": "root", "enabled": true}'
+
+# Create volume subdirectories
+sudo mkdir -p /mnt/pool/container-volumes/semaphore/mysql
+sudo mkdir -p /mnt/pool/container-volumes/semaphore/inventory
+sudo mkdir -p /mnt/pool/container-volumes/semaphore/authorized-keys
+sudo mkdir -p /mnt/pool/container-volumes/semaphore/config

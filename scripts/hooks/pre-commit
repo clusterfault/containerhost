@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+red='\033[0;31m'
+green='\033[0;32m'
+yellow='\033[0;33m'
+no_color='\033[0m'
+
+# Find all changed files for this commit
+# Compute the diff only once to save a small amount of time.
+CHANGED_FILES=$(git diff --name-only --cached --diff-filter=ACMR)
+# Get only changed files that match our file suffix pattern
+get_pattern_files() {
+    pattern=$(echo "$*" | sed "s/ /\$\\\|/g")
+    echo "$CHANGED_FILES" | { grep "$pattern$" || true; }
+}
+# Get all changed secret files
+SECRET_FILES=$(get_pattern_files secrets.env)
+
+exit_code=0
+for file in ${SECRET_FILES}; do
+	if ( cat $file | grep -q "\$ANSIBLE_VAULT;" ); then
+		echo -e "${yellow}${file}${no_color} ${green}is encrypted. Safe to commit.${no_color}"
+	else
+		echo -e "${yellow}${file}${no_color} ${red}not encrypted. Encrypt before committing.${no_color}"
+		exit_code=$((exit_code+1))
+		
+	fi
+done
+exit $exit_code

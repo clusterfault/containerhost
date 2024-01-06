@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+REMOTE_NAME=${1:-script}
+
+git push $(git remote get-url $REMOTE_NAME | sed s/github/$(cat /home/harpreet/secrets/github_pusher)@github/)
