@@ -29,17 +29,17 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${NFS_HOST},rw,noatime"
-      device: ":${CONTAINER_VOLUME}/config"
+      o: "addr={{ NFS_HOST }},rw,noatime"
+      device: ":{{ CONTAINER_VOLUME }}/config"
   netdatalib:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${NFS_HOST},rw,noatime"
-      device: ":${CONTAINER_VOLUME}/lib"
+      o: "addr={{ NFS_HOST }},rw,noatime"
+      device: ":{{ CONTAINER_VOLUME }}/lib"
   netdatacache:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${NFS_HOST},rw,noatime"
-      device: ":${CONTAINER_VOLUME}/cache"
+      o: "addr={{ NFS_HOST }},rw,noatime"
+      device: ":{{ CONTAINER_VOLUME }}/cache"

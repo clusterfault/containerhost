@@ -1,0 +1,2 @@
+---
+CRON_INTERVAL: '0 3 * * *'

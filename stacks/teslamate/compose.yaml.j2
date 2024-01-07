@@ -7,10 +7,10 @@ services:
     restart: always
     environment:
       - ENCRYPTION_KEY=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkpJcFJCQWlsQ0V1cXZRRjlwUHRtZkhKWnNjYyJ9.eyJpc3MiOiJodHRwczovL2F1dGgudGVzbGEuY29tL29hdXRoMi92MyIsImF6cCI6Im93bmVyYXBpIiwic3ViIjoiMzlhMWVkMGMtZTNhOS00YjU4LTk2MWQtZDcwZjg0Zjg5Y2M0IiwiYXVkIjpbImh0dHBzOi8vb3duZXItYXBpLnRlc2xhbW90b3JzLmNvbS8iLCJodHRwczovL2F1dGgudGVzbGEuY29tL29hdXRoMi92My91c2VyaW5mbyJdLCJzY3AiOlsib3BlbmlkIiwiZW1haWwiLCJvZmZsaW5lX2FjY2VzcyJdLCJhbXIiOlsicHdkIl0sImV4cCI6MTcwMzg1MzU5NywiaWF0IjoxNzAzODI0Nzk3LCJvdV9jb2RlIjoiTkEiLCJsb2NhbGUiOiJlbi1VUyIsImF1dGhfdGltZSI6MTcwMzgyNDc5Nn0.e-4TvwoNj6_YHyXhATzwDKgvfZcN1h79gONib-MTjkNWVJWKVi3-TfS0sNar29EV-hVWLU-njcj9TKOzUJ-xM_NyqmTqf-00P7NTT5zR8fBjDxtuivjludlUrzV--h0knAv4KO2QWmVlV4YdaMLSkTBS-uPLNWA8_b50A8w3qOJ1M1rVnS_RL897pdmjO9y-AG_07NRFRg6Shf8nG0X10kJg2UuwqpxlqCNaUwqsAJsTXaOK-lvzliF7y6cJcit3pXTS9AoUBd7AeYGsI7r4AnnkcI5roTDHDVjyQibsIdzXOBvh6Ro4xjiACZ1EkDfQy-V5vXht1Q3FeYcZA-ReIg
-      - DATABASE_USER=${DATABASE_USER}
-      - DATABASE_PASS=${DATABASE_PASSWORD}
-      - DATABASE_NAME=${DATABASE_NAME}
-      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_USER={{ DATABASE_USER }}
+      - DATABASE_PASS={{ DATABASE_PASSWORD }}
+      - DATABASE_NAME={{ DATABASE_NAME }}
+      - DATABASE_HOST={{ DATABASE_HOST }}
       - MQTT_HOST=mosquitto
     ports:
       - 4000:4000
@@ -24,9 +24,9 @@ services:
     image: postgres:15
     restart: always
     environment:
-      - POSTGRES_USER=${DATABASE_USER}
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER={{ DATABASE_USER }}
+      - POSTGRES_PASSWORD={{ DATABASE_PASSWORD }}
+      - POSTGRES_DB={{ DATABASE_NAME }}
     volumes:
       - teslamate-db:/var/lib/postgresql/data
 
@@ -35,10 +35,10 @@ services:
     image: teslamate/grafana:latest
     restart: always
     environment:
-      - DATABASE_USER=${DATABASE_USER}
-      - DATABASE_PASS=${DATABASE_PASSWORD}
-      - DATABASE_NAME=${DATABASE_NAME}
-      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_USER={{ DATABASE_USER }}
+      - DATABASE_PASS={{ DATABASE_PASSWORD }}
+      - DATABASE_NAME={{ DATABASE_NAME }}
+      - DATABASE_HOST={{ DATABASE_HOST }}
     ports:
       - 3000:3000
     volumes:
@@ -60,24 +60,24 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${NFS_HOST},rw,noatime"
-      device: ":${CONTAINER_VOLUME}/db"
+      o: "addr={{ NFS_HOST }},rw,noatime"
+      device: ":{{ CONTAINER_VOLUME }}/db"
   teslamate-grafana-data:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${NFS_HOST},rw,noatime"
-      device: ":${CONTAINER_VOLUME}/grafana-data"
+      o: "addr={{ NFS_HOST }},rw,noatime"
+      device: ":{{ CONTAINER_VOLUME }}/grafana-data"
   teslamate-mosquitto-conf:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${NFS_HOST},rw,noatime"
-      device: ":${CONTAINER_VOLUME}/mosquitto-conf"
+      o: "addr={{ NFS_HOST }},rw,noatime"
+      device: ":{{ CONTAINER_VOLUME }}/mosquitto-conf"
   teslamate-mosquitto-data:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${NFS_HOST},rw,noatime"
-      device: ":${CONTAINER_VOLUME}/mosquitto-data"
+      o: "addr={{ NFS_HOST }},rw,noatime"
+      device: ":{{ CONTAINER_VOLUME }}/mosquitto-data"
   

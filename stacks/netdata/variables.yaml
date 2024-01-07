@@ -1,0 +1,3 @@
+---
+CONTAINER_VOLUME: /mnt/pool/container-volumes/netdata
+NFS_HOST: satyanas

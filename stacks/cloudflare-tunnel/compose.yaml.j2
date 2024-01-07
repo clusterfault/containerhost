@@ -8,5 +8,5 @@ services:
     restart: unless-stopped
     command: tunnel run 
     environment:
-        - TUNNEL_TOKEN=$TUNNEL_TOKEN
+        - TUNNEL_TOKEN={{ TUNNEL_TOKEN }}
         - NO_AUTOUPDATE=true

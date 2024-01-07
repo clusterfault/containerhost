@@ -1,0 +1,65 @@
+---
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: semaphore-mysql
+    hostname: mysql
+    volumes:
+      - semaphore-mysql:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD={{ MYSQL_RANDOM_ROOT_PASSWORD }}
+      - MYSQL_DATABASE={{ MYSQL_DATABASE }}
+      - MYSQL_USER={{ MYSQL_USER }}
+      - MYSQL_PASSWORD={{ MYSQL_PASSWORD }}
+    restart: unless-stopped
+  semaphore:
+    container_name: semaphore
+    image: semaphoreui/semaphore:v2.9.37
+    ports:
+      - 5000:3000
+    environment:
+      - SEMAPHORE_DB_USER={{ SEMAPHORE_DB_USER }}
+      - SEMAPHORE_DB_PASS={{ SEMAPHORE_DB_PASS }}
+      - SEMAPHORE_DB_HOST={{ SEMAPHORE_DB_HOST }}
+      - SEMAPHORE_DB_PORT={{ SEMAPHORE_DB_PORT }}
+      - SEMAPHORE_DB_DIALECT={{ SEMAPHORE_DB_DIALECT }}
+      - SEMAPHORE_DB={{ SEMAPHORE_DB }}
+      - SEMAPHORE_PLAYBOOK_PATH={{ SEMAPHORE_PLAYBOOK_PATH }}
+      - SEMAPHORE_ADMIN_PASSWORD={{ SEMAPHORE_ADMIN_PASSWORD }}
+      - SEMAPHORE_ADMIN_NAME={{ SEMAPHORE_ADMIN_NAME }}
+      - SEMAPHORE_ADMIN_EMAIL={{ SEMAPHORE_ADMIN_EMAIL }}
+      - SEMAPHORE_ADMIN={{ SEMAPHORE_ADMIN }}
+      - SEMAPHORE_ACCESS_KEY_ENCRYPTION={{ SEMAPHORE_ACCESS_KEY_ENCRYPTION }}
+      - ANSIBLE_HOST_KEY_CHECKING={{ ANSIBLE_HOST_KEY_CHECKING }}
+    volumes:
+      - semaphore-inventory:/inventory:ro
+      - semaphore-authorized-keys:/authorized-keys:ro
+      - semaphore-config:/etc/semaphore:rw
+    restart: unless-stopped
+    depends_on:
+      - mysql
+volumes:
+  semaphore-mysql:
+   driver: local
+   driver_opts:
+     type: nfs
+     o: "addr={{ NFS_HOST }},rw,noatime"
+     device: ":{{ CONTAINER_VOLUME }}/mysql"
+  semaphore-inventory:
+   driver: local
+   driver_opts:
+     type: nfs
+     o: "addr={{ NFS_HOST }},rw,noatime"
+     device: ":{{ CONTAINER_VOLUME }}/inventory"
+  semaphore-authorized-keys:
+   driver: local
+   driver_opts:
+     type: nfs
+     o: "addr={{ NFS_HOST }},rw,noatime"
+     device: ":{{ CONTAINER_VOLUME }}/authorized-keys"
+  semaphore-config:
+   driver: local
+   driver_opts:
+     type: nfs
+     o: "addr={{ NFS_HOST }},rw,noatime"
+     device: ":{{ CONTAINER_VOLUME }}/config"

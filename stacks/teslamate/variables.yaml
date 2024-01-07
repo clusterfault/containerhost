@@ -1,0 +1,6 @@
+---
+CONTAINER_VOLUME: /mnt/pool/container-volumes/teslamate
+NFS_HOST: satyanas
+DATABASE_HOST: database
+DATABASE_NAME: teslamate
+DATABASE_USER: teslamate

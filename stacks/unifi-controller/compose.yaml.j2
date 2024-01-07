@@ -6,14 +6,14 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=$TZ
+      - TZ={{ TZ }}
       - MEM_LIMIT=1024 #optional
       - MEM_STARTUP=1024 #optional
     volumes:
       - unifi-data:/config
     networks:
       mymacvlan:
-        ipv4_address: $CONTAINER_IP
+        ipv4_address: {{ CONTAINER_IP }}
     ports:
       - 8443:8443
       - 3478:3478/udp
@@ -30,8 +30,8 @@ volumes:
    driver: local
    driver_opts:
      type: nfs
-     o: "addr=$NFS_HOST,rw,noatime"
-     device: ":$CONTAINER_VOLUME"
+     o: "addr={{ NFS_HOST }},rw,noatime"
+     device: ":{{ CONTAINER_VOLUME }}"
 networks:
   mymacvlan:
     name: mymacvlan

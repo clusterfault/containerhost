@@ -5,7 +5,7 @@ services:
     container_name: docker-host-cleanup
     image: servivum/docker-host-cleanup:24.0
     environment:
-      CRON_INTERVAL: $CRON_INTERVAL
+      CRON_INTERVAL: {{ CRON_INTERVAL }}
       # PRUNE_BUILD_CACHES: 'true'
       PRUNE_BUILD_CACHES_FILTER: 'until=5m'
       # PRUNE_CONTAINERS: 'true'

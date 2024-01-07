@@ -1,0 +1,10 @@
+---
+containerhost:
+  hosts:
+    containerhost:
+      ansible_host:
+        192.168.16.30
+
+all:
+  vars:
+    ansible_user: harpreet

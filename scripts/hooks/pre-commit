@@ -15,7 +15,7 @@ get_pattern_files() {
     echo "$CHANGED_FILES" | { grep "$pattern$" || true; }
 }
 # Get all changed secret files
-SECRET_FILES=$(get_pattern_files secrets.env)
+SECRET_FILES=$(get_pattern_files secrets.yaml)
 
 exit_code=0
 for file in ${SECRET_FILES}; do
