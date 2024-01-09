@@ -1,4 +1,0 @@
----
-source_stack_dir: ""
-dest_stack_dir: "/home/harpreet/stacks"
-vault_pass_file: "/home/harpreet/secrets/vault_pass"
