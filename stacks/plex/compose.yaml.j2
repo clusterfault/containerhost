@@ -11,6 +11,9 @@ services:
       - config:/config
       - transcode:/transcode
       - media:/data
+    networks:
+      mymacvlan:
+        ipv4_address: {{ CONTAINER_IP }}
 volumes:
   config:
    driver: local
@@ -30,3 +33,7 @@ volumes:
      type: nfs
      o: "addr={{ NFS_HOST }},rw,noatime"
      device: ":{{ MULTIMEDIA_VOLUME }}"
+networks:
+  mymacvlan:
+    name: mymacvlan
+    external: true
