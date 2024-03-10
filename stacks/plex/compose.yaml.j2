@@ -13,6 +13,8 @@ services:
     volumes:
       - config:/config
       - media:/media
+    devices:
+      - /dev/dri:/dev/dri
     networks:
       mymacvlan:
         ipv4_address: {{ CONTAINER_IP }}
