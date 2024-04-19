@@ -8,3 +8,4 @@ containerhost:
 all:
   vars:
     ansible_user: harpreet
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
