@@ -12,12 +12,7 @@
     ansible.builtin.file:
       path: "{{ stack_deployments_dir }}/{{ stack_template_dir | basename }}"
       state: directory
-        #  - name: Check if there is a secrets file exists in the stack template dir
-        #    ansible.builtin.stat:
-        #      path: "{{ stack_template_dir }}/secrets.env"
-        #    register: stat_result
-        #
-  - name: Include all .yaml files except bastion.yaml (2.3)
+  - name: Include all .yaml files in stack template dir
     ansible.builtin.include_vars:
       dir: "{{ stack_template_dir }}"
       extensions:
