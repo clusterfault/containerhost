@@ -1,0 +1,18 @@
+---
+- name: Convert relative stack template dir path to absolute path
+  ansible.builtin.set_fact:
+    source_dir_abs: "{{ source_dir if source_dir is abs else playbook_dir + '/../stacks/' + source_dir }}" 
+- name: Make sure destination directory exists
+  ansible.builtin.file:
+    path: "{{ dest_dir }}/{{ source_dir_abs | basename }}"
+    state: directory
+- name: Include all .yaml files in stack template dir
+  ansible.builtin.include_vars:
+    dir: "{{ source_dir_abs }}"
+    extensions:
+    - 'yaml'
+    ignore_unknown_extensions: true
+- name: Generate compose.yaml based on variables
+  ansible.builtin.template:
+    src: "{{ source_dir_abs}}/compose.yaml.j2"
+    dest: "{{ dest_dir }}/{{ source_dir_abs | basename }}/compose.yml"

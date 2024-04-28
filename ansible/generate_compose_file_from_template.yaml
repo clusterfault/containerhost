@@ -1,0 +1,7 @@
+---
+- name: Generate compose.yaml from given template
+  hosts: containerhost
+  gather_facts: false
+  become: false
+  roles:
+    - generate_compose_file 

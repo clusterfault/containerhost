@@ -1,0 +1,10 @@
+---
+# Directory containing all the compose templates 
+compose_templates_dir: ""
+
+# Source template directory to generate compose file from
+source_dir: ""
+
+# Destination directory to put generated compose file in
+dest_dir: ""
+
