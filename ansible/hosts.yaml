@@ -2,8 +2,8 @@
 containerhost:
   hosts:
     containerhost:
-      ansible_host:
-        192.168.16.30
+      ansible_host: 192.168.16.30
+      stacks_dir: /home/harpreet/repos/containerhost/stacks
 
 all:
   vars:

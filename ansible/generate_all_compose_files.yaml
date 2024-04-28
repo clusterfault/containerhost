@@ -1,0 +1,20 @@
+---
+- name: Generate compose.yaml from given template
+  hosts: containerhost
+  gather_facts: false
+  become: false
+
+  tasks: 
+  - name: Find all compose template files in the stacks dir
+    ansible.builtin.find:
+      paths: "{{ stacks_dir }}"
+      pattern: compose.yaml.j2
+      file_type: file
+      recurse: yes
+    register: result
+  - name: Generate compose files for compose templates found
+    ansible.builtin.include_role:
+      name: generate_compose_file
+    vars:
+      source_dir: "{{ item | dirname }}"
+    loop: "{{ result.files | map(attribute='path') | list }}"
