@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -o errexit
+
+curl -o ucore-autorebase.butane https://raw.githubusercontent.com/clusterfault/containerhost/refs/heads/test/ucore-autorebase.butane
+podman pull quay.io/coreos/butane:release
+podman run -i --rm quay.io/coreos/butane:release --pretty --strict < ucore-autorebase.butane > harpreet.ign
+sudo coreos-installer install /dev/sda --ignition-file harpreet.ign
