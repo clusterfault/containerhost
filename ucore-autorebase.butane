@@ -18,14 +18,14 @@ storage:
           baseurl=https://pkgs.k8s.io/core:/stable:/v1.32/rpm/
           enabled=1
           gpgcheck=1
-          gpgkey=https://pkgs.k8s.io/core:/stable:/v1.32/rpm/repodata/repomd.xml.key          
+          gpgkey=https://pkgs.k8s.io/core:/stable:/v1.27/rpm/repodata/repomd.xml.key          
     - path: /etc/yum.repos.d/rancher-k3s-common.repo
       mode: 0644
       contents:
         inline: |
           [rancher-k3s-common-stable]
           name=Rancher K3s Common (stable)
-          baseurl=https://rpm.rancher.io/k3s/stable/common/coreos/noarch
+          baseurl=https://rpm.rancher.io/k3s/stable/common/centos/9/noarch
           enabled=1
           gpgcheck=1
           repo_gpgcheck=0
@@ -37,6 +37,14 @@ storage:
         source: "https://github.com/k3s-io/k3s/releases/download/v1.31.4%2Bk3s1/k3s"
         verification:
           hash: "sha256-74897e4af26ea383ce50f445752f40ca63a0aef0d90994fb74073c43063eeeb2"
+    - path: /etc/rancher/k3s/kubelet.config
+      mode: 0644
+      contents:
+        inline: |
+          apiVersion: kubelet.config.k8s.io/v1beta1
+          kind: KubeletConfiguration
+          shutdownGracePeriod: 60s
+          shutdownGracePeriodCriticalPods: 10s  
 systemd:
   units:
     - name: "rpm-ostree-install-k3s-dependencies.service"
@@ -81,7 +89,7 @@ systemd:
         RestartSec=5s
         ExecStartPre=-/sbin/modprobe br_netfilter
         ExecStartPre=-/sbin/modprobe overlay
-        ExecStart=/usr/local/bin/k3s server
+        ExecStart=/usr/local/bin/k3s server --kubelet-arg="config=/etc/rancher/k3s/kubelet.config"
 
         [Install]
-        WantedBy=multi-user.target        
+        WantedBy=multi-user.target     
