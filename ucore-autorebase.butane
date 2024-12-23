@@ -18,14 +18,14 @@ storage:
           baseurl=https://pkgs.k8s.io/core:/stable:/v1.32/rpm/
           enabled=1
           gpgcheck=1
-          gpgkey=https://pkgs.k8s.io/core:/stable:/v1.27/rpm/repodata/repomd.xml.key          
+          gpgkey=https://pkgs.k8s.io/core:/stable:/v1.32/rpm/repodata/repomd.xml.key          
     - path: /etc/yum.repos.d/rancher-k3s-common.repo
       mode: 0644
       contents:
         inline: |
           [rancher-k3s-common-stable]
           name=Rancher K3s Common (stable)
-          baseurl=https://rpm.rancher.io/k3s/stable/common/centos/9/noarch
+          baseurl=https://rpm.rancher.io/k3s/stable/common/coreos/noarch
           enabled=1
           gpgcheck=1
           repo_gpgcheck=0
